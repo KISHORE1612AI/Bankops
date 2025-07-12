@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Support Dashboard</title>
+  <link rel="stylesheet" href="customer-support-dashboard.css" />
+</head>
+<body>
+  <header>
+    <h1>Customer Support Dashboard</h1>
+    <button onclick="window.location.href='employee-login.html'" style="position: absolute; top: 20px; right: 20px; padding: 8px 15px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">Logout</button>
+  </header>
+
+  <main class="dashboard">
+    <section class="metrics">
+      <div class="card">
+        <h3>Open Tickets</h3>
+        <p id="openTickets">0</p>
+      </div>
+      <div class="card">
+        <h3>Resolved Tickets</h3>
+        <p id="resolvedTickets">0</p>
+      </div>
+      <div class="card">
+        <h3>Average Response Time</h3>
+        <p id="avgResponseTime">0 mins</p>
+      </div>
+    </section>
+
+    <!-- Charts section removed -->
+
+    <section class="filters-actions">
+      <div class="filters">
+        <label for="statusFilter">Status:</label>
+        <select id="statusFilter">
+          <option value="">All</option>
+          <option value="OPEN">Open</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="ON_HOLD">On Hold</option>
+          <option value="RESOLVED">Resolved</option>
+          <option value="CLOSED">Closed</option>
+          <option value="REOPENED">Reopened</option>
+        </select>
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" placeholder="Ticket ID or Subject" />
+        <button id="searchBtn">Search</button>
+      </div>
+    </section>
+
+    <section class="tickets">
+      <h2>Recent Support Tickets</h2>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Customer</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Created At</th>
+              <th>Handled By</th>
+              <th>Resolution Note</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ticketsTableBody">
+            <!-- Ticket entries will be populated here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" id="paginationControls">
+        <!-- Pagination buttons will be inserted here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for ticket details and actions (responsive) -->
+  <div id="ticketModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2>Ticket Details</h2>
+      <div id="modalTicketInfo">
+        <!-- Populated dynamically -->
+      </div>
+      <div id="modalActions">
+        <!-- Action buttons and forms will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Muthoot Fincorp Limited
+  </footer>
+
+  <script src="customer-support-dashboard.js"></script>
+</body>
+</html>

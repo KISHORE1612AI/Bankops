@@ -1,0 +1,87 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Muthoot Fincorp | Choose Portal</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Card container */
+    .choice-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .choice-card {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 2rem;
+      width: 260px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .choice-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    }
+
+    .choice-card h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+    }
+
+    .choice-card button {
+      background: linear-gradient(90deg, #5f3dc4, #4b62f2);
+      border: none;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .choice-card button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    Muthoot Fincorp Limited
+  </header>
+
+  <main>
+    <section class="choice-container">
+      <!-- Customer Card -->
+      <div class="choice-card">
+        <h2>Customer Portal</h2>
+        <p>New customers can sign up, existing sign in.</p>
+        <button onclick="location.href='customer-login.html'">
+          Go to Customer
+        </button>
+      </div>
+
+      <!-- Employee Card -->
+      <div class="choice-card">
+        <h2>Employee Portal</h2>
+        <p>Staff &amp; branch users log in here.</p>
+        <button onclick="location.href='employee-login.html'">
+          Go to Employee
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2025 Kishore Kumar SS | Contact:
+    <a href="mailto:kishorekumarsskh@gmail.com">kishorekumarsskh@gmail.com</a>
+  </footer>
+</body>
+</html>

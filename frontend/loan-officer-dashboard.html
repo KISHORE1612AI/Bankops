@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loan Officer Dashboard</title>
+  <link rel="stylesheet" href="loan-officer-dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Loan Officer Dashboard</h1>
+    <button class="logout-btn" onclick="window.location.href='employee-login.html'">Logout</button>
+  </header>
+
+  <main class="dashboard">
+    <section class="metrics" aria-label="Dashboard Metrics">
+      <div class="card">
+        <h3>New Loan Requests</h3>
+        <p id="newLoanRequests">0</p>
+      </div>
+      <div class="card">
+        <h3>Loans In Process</h3>
+        <p id="loansInProcess">0</p>
+      </div>
+      <div class="card">
+        <h3>Approved Loans</h3>
+        <p id="approvedLoans">0</p>
+      </div>
+      <div class="card">
+        <h3>Rejected Loans</h3>
+        <p id="rejectedLoans">0</p>
+      </div>
+    </section>
+
+    <section class="charts" aria-label="Applications Chart">
+      <div class="card">
+        <h3>Loan Applications Over Time</h3>
+        <canvas id="loanApplicationsChart" style="max-width:100%"></canvas>
+      </div>
+    </section>
+
+    <section class="loan-requests" aria-label="Loan Requests Table">
+      <h2>New Loan Requests</h2>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Application ID</th>
+              <th>Customer Name</th>
+              <th>Loan Type</th>
+              <th>Loan Amount</th>
+              <th>Status</th>
+              <th>Submitted At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="loanRequestsTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="assigned-customers" aria-label="Assigned Customers Table">
+      <h2>Assigned Customer Profiles</h2>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Name</th>
+              <th>Loan Type</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="assignedCustomersTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="report-submission" aria-label="Submit Report">
+      <h2>Submit Report to Manager</h2>
+      <form id="reportForm" autocomplete="off">
+        <textarea id="reportContent" placeholder="Enter report details..." required></textarea>
+        <button type="submit">Submit Report</button>
+      </form>
+      <div id="reportSuccess" class="report-success" style="display:none;">Report submitted successfully!</div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Muthoot Fincorp Limited
+  </footer>
+
+  <script src="loan-officer-dashboard.js"></script>
+</body>
+</html>

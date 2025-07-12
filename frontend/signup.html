@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | Muthoot Fincorp</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <header>
+    Muthoot Fincorp Limited
+  </header>
+
+  <main>
+    <div class="login-box signup-box">
+      <h2>Create Account</h2>
+      <form id="signupForm">  <!-- updated ID -->
+        <input type="text" id="fullName" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email Address" required />
+        <input type="tel" id="phone" placeholder="Phone Number" required />  <!-- added -->
+        <input type="password" id="password" placeholder="Password" required />
+        <input type="password" id="confirmPwd" placeholder="Confirm Password" required />
+
+        <div class="links terms">
+          <label>
+            <input type="checkbox" id="agree" required />
+            I agree to the <a href="#" target="_blank">Terms &amp; Privacy</a>
+          </label>
+        </div>
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <div class="links">
+        <span>Already have an account? </span>
+        <a href="customer-login.html">Sign In</a>
+      </div>
+
+      <p id="signupMessage" style="font-size: 1.2rem;"></p>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Kishore Kumar SS | Contact:
+    <a href="mailto:kishorekumarsskh@gmail.com">kishorekumarsskh@gmail.com</a> |
+    <a href="tel:9566176890">9566176890</a>
+  </footer>
+
+  <script src="signup.js"></script>  <!-- external JS file -->
+</body>
+</html>

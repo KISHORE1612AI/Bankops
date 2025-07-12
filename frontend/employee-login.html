@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Sign In</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .error-msg { color: #ff6666; font-size: 0.9rem; margin-top: 0.25rem; }
+    .success { color: green; font-weight: 500; margin-top: 1rem; }
+    .error { color: #ff6666; font-weight: 500; margin-top: 1rem; }
+    input.invalid { border: 2px solid #ff6666; }
+    .links { margin-top: 1rem; font-size: 0.9rem; }
+    .links a { margin-right: 0.5rem; color: #88aaff; text-decoration: none; }
+    .links a:hover { text-decoration: underline; }
+    .back-to-home {
+      display: inline-block;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #888;
+      text-decoration: none;
+    }
+    .back-to-home:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Muthoot Fincorp Limited</header>
+
+  <main>
+    <div class="login-box">
+      <img src="login-01.jpg" class="login-image" alt="Login Illustration"/>
+      <h2>Employee Login</h2>
+      <a href="index.html" class="back-to-home">← Back to Home</a>
+
+      <!-- Login Form -->
+      <form id="employee-login-form" autocomplete="off">
+        <input type="text" id="employee-id" name="employeeId" placeholder="Employee ID" required />
+        <div id="employee-id-error" class="error-msg"></div>
+
+        <input type="email" id="employee-email" name="email" placeholder="Email Address" required />
+        <div id="employee-email-error" class="error-msg"></div>
+
+        <input type="password" id="employee-password" name="password" placeholder="Password" required />
+        <div id="employee-password-error" class="error-msg"></div>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <!-- Action Links -->
+      <div class="links">
+        <a href="change-password.html">Change Password</a>
+        <a href="emp-forgot.html">Forgot Password?</a>
+      </div>
+
+      <!-- Message Area -->
+      <p id="employeeMessage"></p>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Kishore Kumar SS | Contact:
+    <a href="mailto:kishorekumarsskh@gmail.com">kishorekumarsskh@gmail.com</a> |
+    <a href="tel:9566176890">9566176890</a>
+  </footer>
+
+  <script src="employee-login.js"></script>
+</body>
+</html>

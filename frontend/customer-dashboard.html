@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Financial Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="customer-dashboard.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    #credit-kishore {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 30px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      z-index: 9999;
+      font-weight: 600;
+      color: #3079ed;
+      background: #f7f9fae6;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.16);
+      padding: 0.5em 2em;
+      max-width: 300px;
+      font-size: 1.08rem;
+      pointer-events: none;
+      letter-spacing: 0.08em;
+    }
+    .view-more-btn {
+      float: left;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      padding: 0.3em 1.1em;
+    }
+    .modal-lg-scrollable {
+      max-width: 900px;
+    }
+    .modal-body-scrollable {
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .filter-inline-form .form-control, .filter-inline-form .form-select {
+      min-width: 150px;
+      font-size: 0.92rem;
+      height: 2.1em;
+      padding: 0.1em 0.5em;
+    }
+    .filter-inline-form .btn {
+      font-size: 0.92rem;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar/Header -->
+  <nav class="navbar custom-navbar">
+    <div class="navbar-container">
+      <div class="brand-section d-flex align-items-center">
+        <img src="logo.png" alt="Logo" class="dashboard-logo me-2" />
+        <span class="dashboard-title">Customer Financial Dashboard</span>
+      </div>
+      <div class="user-section d-flex align-items-center">
+        <span class="welcome-user">Welcome, <span id="custNameNav"></span></span>
+        <div class="dropdown ms-2">
+          <button class="btn-profile dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="avatar-default.png" alt="Avatar" class="avatar-img" />
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href="#" id="settingsBtn">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button id="logoutBtn" class="dropdown-item logout-btn">Logout</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-container container-fluid py-4">
+    <!-- Profile and Account Summary -->
+    <section class="row profile-summary mb-4">
+      <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+        <div class="card profile-card shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="avatar-default.png" alt="User Avatar" class="avatar-img-lg me-3" />
+              <div>
+                <h3 class="mb-0" id="custName"></h3>
+                <span class="badge bg-success ms-1" id="custStatus"></span>
+              </div>
+            </div>
+            <ul class="list-unstyled profile-details">
+              <li><strong>Email:</strong> <span id="custEmail"></span></li>
+              <li><strong>Phone:</strong> <span id="custPhone"></span></li>
+              <li><strong>Last Login:</strong> <span id="custLastLogin"></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="card account-card shadow-sm h-100">
+          <div class="card-body">
+            <h4 class="card-title mb-3">Account Summary</h4>
+            <ul class="list-unstyled account-details mb-3">
+              <li><strong>Account Number:</strong> <span id="accountNumber">–</span></li>
+              <li><strong>Balance:</strong> <span id="accountBalance">₹0.00</span></li>
+            </ul>
+            <canvas id="balanceChart" class="w-100" height="70"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="action-buttons d-flex flex-wrap justify-content-center gap-3 mb-4">
+      <button id="depositBtn" class="btn-action d-flex align-items-center"><span class="me-2">➕</span>Deposit Funds</button>
+      <button id="transferBtn" class="btn-action d-flex align-items-center"><span class="me-2">🔄</span>Transfer Funds</button>
+      <button id="loanBtn" class="btn-action d-flex align-items-center"><span class="me-2">💳</span>Apply for Loan</button>
+      <button id="ticketBtn" class="btn-action d-flex align-items-center"><span class="me-2">🛠️</span>Submit Support Ticket</button>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="quick-links mb-4 d-none d-md-flex justify-content-end">
+      <a href="#" class="quick-action-btn" id="exportPDFBtn" title="Export as PDF">
+        <span>🗎</span> Download account Statement
+      </a>
+    </section>
+
+    <!-- Recent Transactions Table -->
+    <section class="table-section mb-4">
+      <div class="section-title">
+        <button type="button" id="viewMoreTxnBtn" class="btn btn-link view-more-btn" data-bs-toggle="modal" data-bs-target="#txnViewMoreModal">
+          View More
+        </button>
+        <h3 class="mb-0">Recent Transactions</h3>
+      </div>
+      <div class="table-responsive">
+        <table id="recentTransactions" class="table table-bordered table-hover table-sm align-middle">
+          <thead class="table-success">
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS will insert rows here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Open Loans Table -->
+    <section class="table-section mb-4">
+      <div class="section-title">
+        <button type="button" id="viewMoreLoansBtn" class="btn btn-link view-more-btn" data-bs-toggle="modal" data-bs-target="#loansViewMoreModal">
+          View More
+        </button>
+        <h3 class="mb-0">Open Loans</h3>
+      </div>
+      <div class="table-responsive">
+        <table id="openLoans" class="table data-table align-middle">
+          <thead>
+            <tr>
+              <th>Loan ID</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Applied At</th>
+              <th>Reviewed By</th>
+              <th>Reviewed At</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="8" class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Open Support Tickets Table -->
+    <section class="table-section mb-4">
+      <div class="section-title">
+        <button type="button" id="viewMoreTicketsBtn" class="btn btn-link view-more-btn" data-bs-toggle="modal" data-bs-target="#ticketsViewMoreModal">
+          View More
+        </button>
+        <h3 class="mb-0">Open Support Tickets</h3>
+      </div>
+      <div class="table-responsive">
+        <table id="openTickets" class="table data-table align-middle">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Issue Type</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Created At</th>
+              <th>Handled By</th>
+              <th>Handled At</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="8" class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Deposit/Transfer/Loan/Ticket Modals (unchanged, keep your originals here) -->
+
+  <!-- View More Transactions Modal -->
+  <div id="txnViewMoreModal" class="modal fade" tabindex="-1" aria-labelledby="txnViewMoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="txnViewMoreModalLabel">All Transactions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-scrollable">
+          <form id="txnModalFilterForm" class="row mb-3 filter-inline-form g-2">
+            <div class="col-auto">
+              <label for="txnModalFromDate" class="form-label mb-0">From</label>
+              <input type="date" id="txnModalFromDate" class="form-control" />
+            </div>
+            <div class="col-auto">
+              <label for="txnModalToDate" class="form-label mb-0">To</label>
+              <input type="date" id="txnModalToDate" class="form-control" />
+            </div>
+            <div class="col-auto align-self-end">
+              <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+            </div>
+            <div class="col-auto align-self-end">
+              <button type="button" class="btn btn-secondary btn-sm" id="txnModalResetBtn">Reset</button>
+            </div>
+          </form>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-sm align-middle">
+              <thead class="table-success">
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="txnModalTableBody">
+                <!-- JS will populate -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View More Loans Modal -->
+  <div id="loansViewMoreModal" class="modal fade" tabindex="-1" aria-labelledby="loansViewMoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loansViewMoreModalLabel">All Loans</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-scrollable">
+          <form id="loansModalFilterForm" class="row mb-3 filter-inline-form g-2">
+            <div class="col-auto">
+              <label for="loansModalFromDate" class="form-label mb-0">From</label>
+              <input type="date" id="loansModalFromDate" class="form-control" />
+            </div>
+            <div class="col-auto">
+              <label for="loansModalToDate" class="form-label mb-0">To</label>
+              <input type="date" id="loansModalToDate" class="form-control" />
+            </div>
+            <div class="col-auto align-self-end">
+              <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+            </div>
+            <div class="col-auto align-self-end">
+              <button type="button" class="btn btn-secondary btn-sm" id="loansModalResetBtn">Reset</button>
+            </div>
+          </form>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-sm align-middle">
+              <thead>
+                <tr>
+                  <th>Loan ID</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Applied At</th>
+                  <th>Reviewed By</th>
+                  <th>Reviewed At</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody id="loansModalTableBody">
+                <!-- JS will populate -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View More Tickets Modal -->
+  <div id="ticketsViewMoreModal" class="modal fade" tabindex="-1" aria-labelledby="ticketsViewMoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-lg-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ticketsViewMoreModalLabel">All Support Tickets</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-scrollable">
+          <form id="ticketsModalFilterForm" class="row mb-3 filter-inline-form g-2">
+            <div class="col-auto">
+              <label for="ticketsModalFromDate" class="form-label mb-0">From</label>
+              <input type="date" id="ticketsModalFromDate" class="form-control" />
+            </div>
+            <div class="col-auto">
+              <label for="ticketsModalToDate" class="form-label mb-0">To</label>
+              <input type="date" id="ticketsModalToDate" class="form-control" />
+            </div>
+            <div class="col-auto align-self-end">
+              <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+            </div>
+            <div class="col-auto align-self-end">
+              <button type="button" class="btn btn-secondary btn-sm" id="ticketsModalResetBtn">Reset</button>
+            </div>
+          </form>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-sm align-middle">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Issue Type</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th>Handled By</th>
+                  <th>Handled At</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody id="ticketsModalTableBody">
+                <!-- JS will populate -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deposit/Transfer/Loan/Ticket Modals (unchanged, keep your originals here) -->
+
+  <!-- Floating credit -->
+  <div id="credit-kishore">kishorekumar ss</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="customer-dashboard.js"></script>
+  <script>
+    // Show "kishorekumar ss" only when scrolled to bottom
+    window.addEventListener('scroll', function() {
+      const creditEl = document.getElementById('credit-kishore');
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 20
+      ) {
+        creditEl.style.display = "block";
+      } else {
+        creditEl.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

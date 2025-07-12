@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditor Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Auditor CSS -->
+    <link rel="stylesheet" href="auditor-dashboard.css">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-center flex-grow-1">Auditor Dashboard</h2>
+            <button id="logoutBtn" class="btn btn-outline-danger ms-3">Logout</button>
+        </div>
+
+        <!-- Dashboard Summary -->
+        <div class="row text-center mb-4" id="dashboard-summary">
+            <div class="col-md-4 mb-3">
+                <div class="card border-primary shadow-sm">
+                    <div class="card-body">
+                        <h5>Total Customers</h5>
+                        <p id="total-customers" class="fs-4 fw-bold">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card border-success shadow-sm">
+                    <div class="card-body">
+                        <h5>Total Deposits</h5>
+                        <p id="total-deposits" class="fs-4 fw-bold">₹0.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card border-warning shadow-sm">
+                    <div class="card-body">
+                        <h5>Total Transactions</h5>
+                        <p id="total-transactions" class="fs-4 fw-bold">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <h5 class="text-center">Login Activity Chart</h5>
+                <canvas id="loginChart" height="200"></canvas>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h5 class="text-center">Transaction Type Chart</h5>
+                <canvas id="txnChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Login Activities Table & Filters -->
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+            <h4 class="mb-0">Customer Login Activities</h4>
+            <div class="d-flex flex-wrap gap-2">
+                <input type="date" id="loginFilterDate" class="form-control form-control-sm" placeholder="Date">
+                <input type="text" id="loginFilterEmail" class="form-control form-control-sm" placeholder="Email">
+                <button id="loginFilterBtn" class="btn btn-outline-secondary btn-sm">Filter</button>
+                <button id="loginClearBtn" class="btn btn-outline-dark btn-sm">Clear</button>
+                <button id="exportLoginBtn" class="btn btn-outline-primary btn-sm">Export Login Logs</button>
+            </div>
+        </div>
+        <div class="table-responsive mb-2">
+            <table class="table table-bordered table-hover table-sm align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Email</th>
+                        <th>Timestamp</th>
+                        <th>IP Address</th>
+                        <th>Device</th>
+                    </tr>
+                </thead>
+                <tbody id="login-activity-body">
+                    <!-- JavaScript will insert rows here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mb-4">
+            <button id="showMoreLoginBtn" class="btn btn-outline-primary btn-sm">Show More</button>
+        </div>
+
+        <!-- Transactions Table & Filters -->
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+            <h4 class="mb-0">Customer Transactions</h4>
+            <div class="d-flex flex-wrap gap-2">
+                <input type="date" id="txnFilterDate" class="form-control form-control-sm" placeholder="Date">
+                <input type="text" id="txnFilterCustomer" class="form-control form-control-sm" placeholder="Customer ID/Email">
+                <select id="txnFilterType" class="form-select form-select-sm">
+                    <option value="">All Types</option>
+                    <option value="DEPOSIT">Deposit</option>
+                    <option value="TRANSFER_IN">Transfer In</option>
+                    <option value="TRANSFER_OUT">Transfer Out</option>
+                </select>
+                <select id="txnFilterStatus" class="form-select form-select-sm">
+                    <option value="">All Status</option>
+                    <option value="SUCCESS">Success</option>
+                    <option value="FAILED">Failed</option>
+                </select>
+                <button id="txnFilterBtn" class="btn btn-outline-secondary btn-sm">Filter</button>
+                <button id="txnClearBtn" class="btn btn-outline-dark btn-sm">Clear</button>
+                <button id="exportTxnBtn" class="btn btn-outline-success btn-sm">Export Transactions</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-sm align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Customer ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="transactions-body">
+                    <!-- JavaScript will insert rows here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mb-4">
+            <button id="showMoreTxnBtn" class="btn btn-outline-success btn-sm">Show More</button>
+        </div>
+    </div>
+
+    <!-- Audit Log Detail Modal -->
+    <div class="modal fade" id="logDetailModal" tabindex="-1" aria-labelledby="logDetailLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 id="logDetailLabel" class="modal-title">Log Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="logDetailBody">
+            <!-- JS will populate log details here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS for Dashboard -->
+    <script src="auditor-dashboard.js"></script>
+</body>
+</html>

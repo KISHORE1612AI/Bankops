@@ -1,0 +1,384 @@
+/* =========================
+   Global Resets & Fonts
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+:root {
+  --primary: #2061e8;
+  --primary-dark: #153d8a;
+  --accent: #ffd600;
+  --success: #2ecc40;
+  --danger: #e74c3c;
+  --info: #00bcd4;
+  --pending: #ff9800;
+  --rejected: #d32f2f;
+  --approved: #43a047;
+  --bg: #f4f8fb;
+  --card-bg: #ffffff;
+  --text-main: #222b45;
+  --text-light: #78849e;
+  --border-radius: 12px;
+  --box-shadow: 0 2px 16px rgba(32,97,232,0.10),0 1.5px 6px rgba(0,0,0,0.04);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   Header
+========================= */
+header {
+  width: 100%;
+  background: linear-gradient(90deg, var(--primary) 50%, var(--accent) 100%);
+  color: #fff;
+  padding: 24px 0 16px 0;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 3px 12px 0 rgba(32,97,232,0.07);
+  border-radius: 0 0 20px 20px;
+}
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 10px 26px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(231,76,60,0.10);
+  transition: background 0.2s;
+}
+.logout-btn:hover, .logout-btn:focus {
+  background: #b71c1c;
+  outline: none;
+}
+
+/* =========================
+   Main Dashboard Layout
+========================= */
+main.dashboard {
+  max-width: 1180px;
+  margin: 32px auto 0 auto;
+  padding: 0 18px 32px 18px;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================
+   Metric Cards
+========================= */
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 8px;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 22px 22px 18px 22px;
+  flex: 1 1 220px;
+  min-width: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.card h3 {
+  margin: 0 0 0.7em 0;
+  font-size: 1.07rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 0.5px;
+}
+.card p {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 2px;
+}
+.card:nth-child(1) p { color: var(--pending);}
+.card:nth-child(2) p { color: var(--info);}
+.card:nth-child(3) p { color: var(--approved);}
+.card:nth-child(4) p { color: var(--rejected);}
+
+.card:hover {
+  box-shadow: 0 6px 24px 0 rgba(32,97,232,0.20),0 3px 12px rgba(0,0,0,0.04);
+}
+
+/* =========================
+   Chart Section
+========================= */
+.charts {
+  display: flex;
+  gap: 1.5rem;
+}
+.charts .card {
+  width: 100%;
+  min-width: 0;
+  align-items: stretch;
+}
+
+/* =========================
+   Responsive Tables
+========================= */
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  margin: 0;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  font-size: 1rem;
+}
+th, td {
+  padding: 13px 12px;
+  border-bottom: 1px solid #ecf0f5;
+  text-align: left;
+}
+th {
+  background: #f7fafe;
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: 0.2px;
+}
+tr:hover {
+  background: #f0f3fc;
+}
+td {
+  color: var(--text-main);
+  font-weight: 500;
+}
+@media (max-width: 900px) {
+  .metrics { flex-direction: column; }
+  .charts { flex-direction: column; }
+}
+@media (max-width: 700px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  th, td {
+    padding: 12px 7px;
+    text-align: left;
+    min-width: unset;
+  }
+  tr {
+    margin-bottom: 0.8em;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(32,97,232,0.04);
+  }
+  th {
+    position: absolute;
+    top: -9999px; left: -9999px;
+  }
+  td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    white-space: pre-line;
+  }
+  td:before {
+    position: absolute;
+    top: 13px; left: 12px;
+    width: 46%;
+    white-space: normal;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 0.98em;
+    content: attr(data-label);
+  }
+}
+
+/* =========================
+   Section Titles
+========================= */
+section > h2, section > h3 {
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   Buttons & Actions
+========================= */
+.action-buttons {
+  display: flex;
+  flex-direction: row;  /* horizontal alignment */
+  align-items: center;
+  gap: 12px;            /* even horizontal spacing */
+  flex-wrap: wrap;      /* allow wrapping on small screens */
+  margin: 0;
+  padding: 0;
+}
+
+button, .btn-action {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+  min-width: 100px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 1px 6px rgba(32,97,232,0.08);
+  outline: none;
+}
+button:active, .btn-action:active {
+  background: var(--primary-dark);
+  transform: scale(0.98);
+}
+button:focus, .btn-action:focus {
+  background: var(--primary-dark);
+}
+.btn-approve { background: var(--approved); }
+.btn-approve:hover, .btn-approve:focus { background: #237d35; }
+.btn-reject { background: var(--danger); }
+.btn-reject:hover, .btn-reject:focus { background: #b71c1c; }
+.btn-process { background: var(--pending); color: #fff; }
+.btn-process:hover, .btn-process:focus { background: #f57c00; }
+.btn-view-profile { background: var(--info); }
+.btn-view-profile:hover, .btn-view-profile:focus { background: #0192a5; }
+
+/* For a more professional look: subtle shadows, soft transitions, and spacing */
+.btn-action {
+  box-shadow: 0 2px 8px rgba(32,97,232,0.12);
+  letter-spacing: 0.1px;
+}
+.btn-action:not(:last-child) {
+  /* No margin, spacing handled by gap in .action-buttons */
+}
+
+@media (max-width: 600px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .btn-action {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* =========================
+   Report Submission
+========================= */
+.report-submission {
+  margin-top: 1.5rem;
+}
+#reportForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 22px 18px 18px 18px;
+  max-width: 580px;
+}
+#reportContent {
+  min-height: 90px;
+  border-radius: 9px;
+  border: 1.5px solid #e2e6ef;
+  padding: 10px 13px;
+  font-size: 1rem;
+  resize: vertical;
+  font-family: inherit;
+  background: #f8faff;
+}
+#reportForm button[type="submit"] {
+  align-self: flex-end;
+  width: fit-content;
+  margin-top: 5px;
+}
+.report-success {
+  color: var(--success);
+  font-weight: 600;
+  margin-top: 8px;
+  font-size: 1.08em;
+}
+
+/* =========================
+   Footer
+========================= */
+footer {
+  text-align: center;
+  padding: 16px 0 10px 0;
+  color: var(--text-light);
+  background: #fff;
+  font-size: 1.04em;
+  border-top: 1.5px solid #e2e6ef;
+  margin-top: auto;
+  border-radius: 18px 18px 0 0;
+}
+
+/* =========================
+   Chart.js Default Style
+========================= */
+#loanApplicationsChart {
+  width: 98% !important;
+  max-width: 100% !important;
+  height: 270px !important;
+  margin: 0 auto;
+  display: block;
+  background: #f4f8fb;
+  border-radius: 8px;
+  box-shadow: 0 1px 7px rgba(32,97,232,0.07);
+}
+
+/* =========================
+   Miscellaneous
+========================= */
+::-webkit-scrollbar {
+  width: 9px;
+  background: #f0f3fc;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 8px;
+}
+@media (max-width: 500px) {
+  header h1 { font-size: 1.2rem; }
+  .logout-btn { padding: 7px 12px; font-size: 0.98rem; top: 12px; right: 10px;}
+  main.dashboard { padding: 0 4px; }
+  .card { padding: 13px 9px 10px 11px; min-width: 130px; }
+  #reportForm { padding: 13px 7px 10px 7px; }
+}

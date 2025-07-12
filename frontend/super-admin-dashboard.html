@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Super Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CDN for production-ready responsive design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="super-admin-dashboard.css">
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg shadow-sm" style="background: linear-gradient(90deg, #1877f2 70%, #0fb784 100%); border-bottom: 5px solid #f26522;">
+        <div class="container-fluid">
+            <span class="navbar-brand fw-bold fs-3 text-white">
+                <i class="fa fa-shield-alt me-2"></i>Super Admin Dashboard
+            </span>
+            <div class="d-flex align-items-center gap-3">
+                <span id="currentUser" class="me-3 text-white small"></span>
+                <button class="btn btn-light me-2" id="refreshBtn" onclick="loadDashboard()">
+                    <i class="fa fa-rotate"></i> Refresh
+                </button>
+                <button class="btn btn-danger" id="logoutBtn" onclick="logout()">
+                    <i class="fa fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-4">
+        <div class="dashboard-container mx-auto" style="max-width: 1120px;">
+            <!-- Dashboard Cards -->
+            <div id="statsSection" style="min-height: 180px;">
+                <div class="loader" id="loader"></div>
+                <div id="dashboardCards" style="display:none;">
+                    <div class="row g-4 dashboard-cards">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="card card-stat border-primary border-3 shadow h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="me-3 text-primary">
+                                        <i class="fa fa-users fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-label fw-medium text-secondary">Total Users</div>
+                                        <div class="stat-value fs-2 fw-bold" id="totalUsers">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="card card-stat border-success border-3 shadow h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="me-3 text-success">
+                                        <i class="fa fa-user-check fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-label fw-medium text-secondary">Active Users</div>
+                                        <div class="stat-value fs-2 fw-bold" id="activeUsers">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="card card-stat border-info border-3 shadow h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="me-3 text-info">
+                                        <i class="fa fa-briefcase fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-label fw-medium text-secondary">Total Employees</div>
+                                        <div class="stat-value fs-2 fw-bold" id="totalEmployees">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="card card-stat border-warning border-3 shadow h-100 clickable-card"
+                                 id="totalLoansCard" tabindex="0" role="button" onclick="showLoansModal()">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="me-3 text-warning">
+                                        <i class="fa fa-sack-dollar fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-label fw-medium text-secondary">Total Loans</div>
+                                        <div class="stat-value fs-2 fw-bold" id="totalLoans">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="card card-stat border-danger border-3 shadow h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="me-3 text-danger">
+                                        <i class="fa fa-ticket-alt fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-label fw-medium text-secondary">Pending Tickets</div>
+                                        <div class="stat-value fs-2 fw-bold" id="pendingTickets">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class="card card-stat border-dark border-3 shadow h-100 clickable-card"
+                                 id="totalTransactionsCard" tabindex="0" role="button" onclick="showTransactionsModal()">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="me-3 text-dark">
+                                        <i class="fa fa-receipt fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-label fw-medium text-secondary">Total Transactions</div>
+                                        <div class="stat-value fs-2 fw-bold text-success" id="totalTransactions">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quick Actions -->
+            <hr class="my-4">
+            <div>
+                <h4 class="mb-3"><i class="fa fa-bolt text-warning"></i> Quick Actions</h4>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-primary border-2 border-primary w-100 mb-2 py-3 fw-semibold fs-5" onclick="goToUsers()">
+                            <i class="fa fa-users me-2"></i> Manage Users
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-success border-2 border-success w-100 mb-2 py-3 fw-semibold fs-5" onclick="goToEmployees()">
+                            <i class="fa fa-briefcase me-2"></i> Manage Employees
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-outline-danger border-2 border-danger w-100 mb-2 py-3 fw-semibold fs-5" onclick="goToTickets()">
+                            <i class="fa fa-ticket-alt me-2"></i> View Support Tickets
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loans Details Modal -->
+    <div class="modal fade" id="loansModal" tabindex="-1" aria-labelledby="loansModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loansModalLabel"><i class="fa fa-sack-dollar text-warning"></i> Loans Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-0">
+            <div id="loansModalLoader" class="text-center py-5"><span class="spinner-border text-warning"></span></div>
+            <div id="loansModalContent" style="display:none;">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Loan ID</th>
+                      <th>Customer</th>
+                      <th>Type</th>
+                      <th>Amount (₹)</th>
+                      <th>Status</th>
+                      <th>Applied At</th>
+                    </tr>
+                  </thead>
+                  <tbody id="loansModalTableBody"></tbody>
+                </table>
+              </div>
+              <div id="loansModalEmpty" class="text-center py-4 text-muted d-none">No loans found.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Transactions Details Modal -->
+    <div class="modal fade" id="transactionsModal" tabindex="-1" aria-labelledby="transactionsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="transactionsModalLabel"><i class="fa fa-receipt text-dark"></i> Transactions Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-0">
+            <div id="transactionsModalLoader" class="text-center py-5"><span class="spinner-border text-dark"></span></div>
+            <div id="transactionsModalContent" style="display:none;">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Txn ID</th>
+                      <th>Customer</th>
+                      <th>Type</th>
+                      <th>Amount (₹)</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transactionsModalTableBody"></tbody>
+                </table>
+              </div>
+              <div id="transactionsModalEmpty" class="text-center py-4 text-muted d-none">No transactions found.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS & Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FontAwesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <!-- Your custom JS -->
+    <script src="super-admin-dashboard.js"></script>
+    <script>
+        // Set current user (replace with actual logic)
+        document.getElementById('currentUser').innerHTML = localStorage.getItem("currentUserName") || "Super Admin";
+
+        // Navigation handlers for Quick Actions
+        function goToUsers() {
+            window.location.href = "/super-admin-users.html";
+        }
+        function goToEmployees() {
+            window.location.href = "/super-admin-employees.html";
+        }
+        function goToTickets() {
+            window.location.href = "/super-admin-tickets.html";
+        }
+
+        // Logout handler
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("currentUserName");
+                window.location.href = "/employee-login.html";
+            }
+        }
+    </script>
+</body>
+</html>

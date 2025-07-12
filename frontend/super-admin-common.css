@@ -1,0 +1,139 @@
+/* super-admin-common.css: Shared styles for Super Admin management pages */
+
+:root {
+  --color-primary: #1877f2;
+  --color-secondary: #f26522;
+  --color-accent: #0fb784;
+  --color-danger: #e74c3c;
+  --color-success: #20be6b;
+  --color-warning: #f1c40f;
+  --color-info: #3498db;
+  --color-neutral-100: #f7f8fa;
+  --color-neutral-200: #e9eaee;
+  --color-neutral-400: #a6a9b7;
+  --color-neutral-900: #222638;
+  --color-white: #fff;
+  --font-family-base: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+  --border-radius: 12px;
+  --box-shadow-md: 0 4px 24px rgba(30, 42, 80, 0.14);
+  --box-shadow-xs: 0 1px 4px rgba(30, 42, 80, 0.08);
+}
+
+body {
+  background: var(--color-neutral-100);
+  color: var(--color-neutral-900);
+  font-family: var(--font-family-base);
+  margin: 0; padding: 0;
+}
+
+.superadmin-header {
+  background: linear-gradient(90deg, #1877f2 70%, #0fb784 100%);
+  color: var(--color-white);
+  padding: 1.1rem 0.7rem;
+  box-shadow: var(--box-shadow-xs);
+  border-bottom: 4px solid var(--color-secondary);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.superadmin-header .back-link {
+  color: var(--color-white);
+  opacity: 0.82;
+  margin-right: 1.2rem;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.superadmin-header .back-link:hover {
+  color: var(--color-warning);
+}
+
+.superadmin-container {
+  max-width: 1100px;
+  margin: 2.4rem auto 1rem auto;
+  background: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-md);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+}
+@media (max-width: 900px) {
+  .superadmin-container { padding: 1rem 0.4rem; }
+}
+
+.table-responsive {
+  background: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-xs);
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.superadmin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  background: var(--color-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+.superadmin-table th, .superadmin-table td {
+  padding: 0.85em 1em;
+  border-bottom: 1px solid var(--color-neutral-200);
+  text-align: left;
+}
+.superadmin-table th {
+  background: var(--color-neutral-200);
+  color: var(--color-neutral-900);
+  font-weight: 600;
+}
+.superadmin-table tr:last-child td {
+  border-bottom: none;
+}
+.superadmin-table tr:hover td {
+  background: var(--color-neutral-100);
+}
+.table-title {
+  font-size: 1.35rem;
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 1.3rem;
+  letter-spacing: 0.1px;
+}
+.loader {
+  display: block;
+  margin: 38px auto 28px auto;
+  border: 7px solid var(--color-neutral-200);
+  border-top: 7px solid var(--color-primary);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg);} }
+
+.table-actions .btn {
+  font-size: 1rem;
+  margin-right: 0.35rem;
+  padding: 0.25em 0.8em;
+  border-radius: 6px;
+}
+
+/* Alerts */
+.alert {
+  padding: 0.9em 1.2em;
+  border-radius: 8px;
+  margin-bottom: 1.1rem;
+  font-size: 1rem;
+  background: #fff8e1;
+  color: var(--color-danger);
+  border-left: 5px solid var(--color-danger);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .superadmin-header { font-size: 1rem; padding: 0.7rem 0.4rem; }
+  .superadmin-container { padding: 0.7rem 0.2rem; }
+  .table-title { font-size: 1rem; }
+}
